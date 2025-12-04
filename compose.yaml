@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  public-inbox:
+    build:
+      context: ./public-inbox/
+      dockerfile: Containerfile
+    environment:
+      - DEBUG=false
+      - PI_CONFIG=/config/config
+    volumes:
+    - ./data/:/data:z
+    - ./public-inbox/config:/config/config:z
+    ports:
+      - "18080:8080"
+      # - "119:119"
+      #
+    # stdin_open: true
+    user: "${UID}:${GID}"
+    restart: unless-stopped
+    command: sleep 60000
+  grokmirror:
+    build:
+      context: ./grokmirror/
+      dockerfile: Containerfile
+    # stdin_open: true
+    user: "${UID}:${GID}"
+    volumes:
+    - ./data/:/data:z
+    - ./grokmirror/lore.conf:/config/lore.conf:z
+    restart: unless-stopped
+    command: grok-pull -v -c /config/lore.conf
+
