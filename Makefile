@@ -1,4 +1,3 @@
-
 # if Podman is available, prefer using it over docker
 ifeq ($(shell command -v podman 2> /dev/null),)
     CONTAINER=docker
@@ -12,7 +11,11 @@ pull:
 		echo "==> data firectory missing. Creating first..."; \
 		mkdir ./data; \
 	fi
-	cd grokmirror && $(CONTAINER)-compose up && $(CONTAINER)-compose down -v
+	cd grokmirror && $(CONTAINER)-compose up -d && $(CONTAINER)-compose logs -f
+
+.PHONY: pull-off
+pull-off:
+	cd grokmirror && $(CONTAINER)-compose down -v
 
 .PHONY: serve
 serve:
@@ -22,7 +25,7 @@ serve:
 	fi
 	cd public-inbox && $(CONTAINER)-compose up -d && $(CONTAINER)-compose logs -f
 
-.PHONY: serve
+.PHONY: serve-off
 serve-off:
 	cd public-inbox && $(CONTAINER)-compose down -v
 
