@@ -1,12 +1,18 @@
-FROM docker.io/library/python:3.14-slim
+FROM docker.io/library/python:3.14-slim-bookworm as base
 
 RUN apt-get update && \
 	apt-get install -y \
 	git \
 	curl \
+	public-inbox \
+	libxapian-dev \
+	libsearch-xapian-perl \
 	&& rm -rf /var/lib/apt/lists/*
 
+WORKDIR /app
+
+COPY grokmirror .
 RUN pip install --upgrade pip && \
-	pip install grokmirror
+	pip install .
 
 WORKDIR /data
