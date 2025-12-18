@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  public-inbox-http:
+    build:
+      context: .
+      dockerfile: ./Containerfile
+
+    environment:
+      - DEBUG=false
+      - PI_CONFIG=/etc/public-inbox/config
+    volumes:
+    - ../data/:/data/:z
+    - ./config:/etc/public-inbox/:z
+    ports:
+      - "18080:8080"
+    user: "${UID}:${GID}"
+    # restart: unless-stopped
+    # script to copy the public_inbox config files
+    # command: python3 /app/copy_config_files.py
+    command: sleep 60000
+    # command: public-inbox-h  
+  # public-inbox-nntp:
+  #   build:
+  #     context: .
+  #     dockerfile: ./Containerfile
+  #
+  #   environment:
+  #     - DEBUG=false
+  #     - PI_CONFIG=/etc/public-inbox/config
+  #   volumes:
+  #   - ./data/:/data/:z
+  #   - ./public-inbox/config:/etc/public-inbox/:z
+  #   ports:
+  #     - "18119:119"
+  #   user: "${UID}:${GID}"
+  #   # restart: unless-stopped
+  #   # script to copy the public_inbox config files
+  #   # command: python3 /app/copy_config_files.py
+  #   command: sleep 60000
+  #   # command: public-inbox-nntp
