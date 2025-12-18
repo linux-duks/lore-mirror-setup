@@ -1,0 +1,3 @@
+[submodule "grokmirror/grokmirror"]
+	path = grokmirror/grokmirror
+	url = git@github.com:auyer/grokmirror.git
